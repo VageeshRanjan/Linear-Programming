@@ -1,0 +1,85 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Aug  8 15:51:47 2020
+
+@author: Vageesh Ranjan
+"""
+
+#%%
+from scipy.optimize import linprog
+import numpy as np
+def linProg_1():
+    print("Classis example of linear lprogramming")
+    # Equations to solve
+# f + e + b + s = 700
+# b -0.5s = 0
+# f + e <= 450
+# e + b <= 300
+# -f + e + b -s <= 0
+
+var_list = ['Interest Rate', 'Loan', 'PV', 'FV']
+# Inequality equations, LHS
+A_ineq = [[1., 1., 0., 0.], [0., 1., 1., 0.], [-1., 1., -1., 1.]]
+
+# Inequality equations, RHS
+B_ineq = [450., 300.,0.]
+
+# Equality equations, LHS
+A_eq = [[1., 1., 1., 1.], [0., 0., 1., -0.5]]
+
+# Equality equations, RHS
+B_eq = [700., 0]
+
+# Cost function
+c = [0., 0., 1., 1.]  # construct a cost function
+
+print('WITHOUT BOUNDS')
+# pass these matrices to linprog, use the method 'interior-point'. '_ub' implies the upper-bound or
+# inequality matrices and '_eq' imply the equality matrices
+res_no_bounds = linprog(c, A_ub=A_ineq, b_ub=B_ineq, A_eq=A_eq, b_eq=B_eq, method='interior-point')
+print(res_no_bounds)
+#%%
+#%%
+from scipy.optimize import linprog
+import numpy as np
+def linProg_1():
+    print("Classis example of linear lprogramming")
+    # Equations to solve
+# f + e + b + s = 700
+# b -0.5s = 0
+# f + e <= 450
+# e + b <= 300
+# -f + e + b -s <= 0
+
+var_list = ['Interest Rate', 'Loan', 'PV', 'FV']
+# Inequality equations, LHS
+A_ineq = [[1., 1., 0., 0.], [0., 1., 1., 0.], [-1., 1., -1., 1.]]
+
+# Inequality equations, RHS
+B_ineq = [450., 300.,0.]
+
+# Equality equations, LHS
+A_eq = [[1., 1., 1., 1.], [0., 0., 1., -0.5]]
+
+# Equality equations, RHS
+B_eq = [700., 0]
+
+# Cost function
+c = [0., 0., 1., 1.]  # construct a cost function
+
+# these are the bounds that help the solver arrive at a solution 
+f_b = [0., 300.] 
+e_b = [0., 200.] 
+b_b = [0., 100.] 
+s_b = [0., 200.] 
+print('WITHOUT BOUNDS')
+# pass these matrices to linprog, use the method 'interior-point'. '_ub' implies the upper-bound or
+# inequality matrices and '_eq' imply the equality matrices
+res_no_bounds = linprog(c, A_ub=A_ineq, b_ub=B_ineq, A_eq=A_eq, b_eq=B_eq, method='interior-point')
+print(res_no_bounds)
+print('WITH BOUNDS')
+res_bounds = linprog(c, A_ub=A_ineq, b_ub=B_ineq, A_eq=A_eq, b_eq=B_eq, bounds=(f_b, e_b, b_b, s_b),
+                     method='interior-point')
+print(res_bounds)
+
+#%%
